@@ -6,9 +6,17 @@ A Simple DoS Tool with support to Proxy and Socks:
 ![](https://i.imgur.com/XzHJYch.png)
 
 # Requirements
+ * 2 Cores
+ * 2 Gbs of Ram
  * Python 3.7
  * aiohttp
  * aiosocks
+
+# Tip
+```
+For unlimited threads: ulimit -n999999; ulimit -u999999; ulimit -e999999
+PD: take care your vps isn't immortal
+```
 
 # Usage
 ```
