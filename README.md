@@ -1,5 +1,5 @@
 # Olso Attack
-A Simple DDoS Tool with support to Proxy and Socks:
+A Simple DoS Tool with support to Proxy and Socks:
   * GET flood (Direct)
   * GET flood (Proxy - Socks)
 
