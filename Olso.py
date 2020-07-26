@@ -218,6 +218,11 @@ async def Direct(session):
         'Cache-Control': 'public, max-age=0',
         'Content-Encoding': 'deflate',
         'Connection': 'keep-alive',
+        'X-Remote-IP': '127.0.0.1',
+        'X-Remote-Addr': '127.0.0.1',
+        'X-Forwarded-For': '127.0.0.1',
+        'X-Client-IP': '127.0.0.1',
+        'X-Originating-IP': '127.0.0.1',
         'Host': Options.host
     }
     tasks = []
@@ -226,8 +231,7 @@ async def Direct(session):
     async def _call(i):
         try:
             header.update({
-                "User-Agent": choice(Options.ua),
-                "X-Forwarded-For": Functions.FakeIP(),
+                "User-Agent": choice(Options.ua)
             })
             async with session.get(url=url + Functions.Cache(), allow_redirects=False, ssl=False, headers=header) as response:
                 sem.release()
