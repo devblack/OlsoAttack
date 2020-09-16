@@ -282,7 +282,7 @@ def Console():
         input("\n\tI'm not responsible for any consequence of the use of this tool, press ENTER to continue.")
         Form.Validate()
         if uname().sysname in ['Linux', 'Darwin']:
-            loop = set_event_loop()
+            loop = get_event_loop()
         else:
             loop = ProactorEventLoop()
         loop.run_until_complete(Attack())
