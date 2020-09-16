@@ -1,2 +1,1 @@
 aiohttp==3.6.2
-aiosocks==0.2.5
