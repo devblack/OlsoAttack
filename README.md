@@ -12,6 +12,19 @@ A Simple DoS Tool with support to Proxy and Socks:
  * aiohttp
  * aiosocks
 
+# Installation
+```
+  #aiosocks
+  git clone git@github.com:nibrag/aiosocks.git
+  cd aiosocks
+  python setup.py install
+
+  #aiohttp
+  pip install aiohttp
+
+  #Enjoy
+```
+
 # Tip
 ```
 For unlimited threads: ulimit -n999999; ulimit -u999999; ulimit -e999999
