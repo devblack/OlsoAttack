@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
+from os import uname
 from random import randint, choice, sample
 from urllib.parse import urlparse
 from aiohttp import ClientSession, TCPConnector, ClientConnectorError, ClientProxyConnectionError, ClientOSError, ClientHttpProxyError, ServerConnectionError
-from asyncio import ensure_future, run, ProactorEventLoop, Semaphore, wait
+from asyncio import ensure_future, run, Semaphore, wait
+if uname().sysname in ['Linux', 'Darwin']:
+    from asyncio import get_event_loop
+else:
+    from asyncio import ProactorEventLoop
 from aiosocks.connector import ProxyConnector, ProxyClientRequest
 from aiosocks import SocksError
 
@@ -249,6 +254,8 @@ async def Direct(session):
             Functions.Error(e.message)
         except ClientConnectorError as e:
             Functions.Error(e.message)
+        except:
+            pass
 
     for i in range(1, 10000000):
         await sem.acquire()
@@ -274,7 +281,10 @@ def Console():
         print(Options.banner)
         input("\n\tI'm not responsible for any consequence of the use of this tool, press ENTER to continue.")
         Form.Validate()
-        loop = ProactorEventLoop()
+        if uname().sysname in ['Linux', 'Darwin']:
+            loop = set_event_loop()
+        else:
+            loop = ProactorEventLoop()
         loop.run_until_complete(Attack())
         loop.close()
     except (KeyboardInterrupt, EOFError):
