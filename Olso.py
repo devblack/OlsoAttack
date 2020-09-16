@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-from os import uname
+from os import name
 from random import randint, choice, sample
 from urllib.parse import urlparse
 from aiohttp import ClientSession, TCPConnector
 from asyncio import ensure_future, run, Semaphore, wait
-if uname().sysname in ['Linux', 'Darwin']:
-    from asyncio import get_event_loop
-else:
+if name == 'nt':
     from asyncio import ProactorEventLoop
+else:
+    from asyncio import get_event_loop
 from aiosocks.connector import ProxyConnector, ProxyClientRequest
 from aiosocks import SocksError
 
@@ -277,10 +277,10 @@ def Console():
         print(Options.banner)
         input("\n\tI'm not responsible for any consequence of the use of this tool, press ENTER to continue.")
         Form.Validate()
-        if uname().sysname in ['Linux', 'Darwin']:
-            loop = get_event_loop()
-        else:
+        if name == 'nt':
             loop = ProactorEventLoop()
+        else:
+            loop = get_event_loop()
         loop.run_until_complete(Attack())
         loop.close()
     except (KeyboardInterrupt, EOFError):
