@@ -12,7 +12,7 @@ A Simple DoS Tool with support to Proxy and Socks:
  * aiohttp
  * aiosocks
 
-# Installation
+# Requirements installation
 ```
   #aiosocks
   git clone git@github.com:nibrag/aiosocks.git
@@ -22,7 +22,6 @@ A Simple DoS Tool with support to Proxy and Socks:
   #aiohttp
   pip install aiohttp
 
-  #Enjoy
 ```
 
 # Tip
