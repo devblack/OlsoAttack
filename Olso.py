@@ -2,7 +2,7 @@
 from os import uname
 from random import randint, choice, sample
 from urllib.parse import urlparse
-from aiohttp import ClientSession, TCPConnector, ClientConnectorError, ClientProxyConnectionError, ClientOSError, ClientHttpProxyError, ServerConnectionError
+from aiohttp import ClientSession, TCPConnector
 from asyncio import ensure_future, run, Semaphore, wait
 if uname().sysname in ['Linux', 'Darwin']:
     from asyncio import get_event_loop
@@ -250,10 +250,6 @@ async def Direct(session):
                 sem.release()
                 if i % 1000 == 0:
                     Functions.Success("Target: {} | Thread: {} | Status: {}".format(url, i, response.status))
-        except ServerConnectionError as e:
-            Functions.Error(e.message)
-        except ClientConnectorError as e:
-            Functions.Error(e.message)
         except:
             pass
 
@@ -282,9 +278,11 @@ def Console():
         input("\n\tI'm not responsible for any consequence of the use of this tool, press ENTER to continue.")
         Form.Validate()
         if uname().sysname in ['Linux', 'Darwin']:
-            loop = set_event_loop()
+            loop = get_event_loop()
+            
         else:
             loop = ProactorEventLoop()
+        
         loop.run_until_complete(Attack())
         loop.close()
     except (KeyboardInterrupt, EOFError):
