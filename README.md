@@ -15,7 +15,7 @@ A Simple DoS Tool with support to Proxy and Socks:
 # Requirements installation
 ```
   #aiosocks
-  git clone git@github.com:nibrag/aiosocks.git
+  git clone https://github.com/nibrag/aiosocks.git
   cd aiosocks
   python setup.py install
 
