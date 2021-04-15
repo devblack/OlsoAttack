@@ -181,14 +181,6 @@ async def Yokai(session):
         'Cache-Control': 'public, max-age=0',
         'Content-Encoding': 'deflate',
         'Connection': 'keep-alive',
-        'X-Remote-IP': '127.0.0.1',
-        'X-Remote-Addr': '127.0.0.1',
-        'X-Forwarded-For': '127.0.0.1',
-        'X-Client-IP': '127.0.0.1',
-        'X-Originating-IP': '127.0.0.1',
-        'X-Real-Ip': '127.0.0.1',
-        'CF-Connecting-IP': '127.0.0.1',
-        'True-Client-IP': '127.0.0.1',
         'Via': '1.1 Chrome-Compression-Proxy',
         'Host': Options.host
     }
@@ -227,14 +219,6 @@ async def Direct(session):
         'Cache-Control': 'public, max-age=0',
         'Content-Encoding': 'deflate',
         'Connection': 'keep-alive',
-        'X-Remote-IP': '127.0.0.1',
-        'X-Remote-Addr': '127.0.0.1',
-        'X-Forwarded-For': '127.0.0.1',
-        'X-Client-IP': '127.0.0.1',
-        'X-Originating-IP': '127.0.0.1',
-        'X-Real-Ip': '127.0.0.1',
-        'CF-Connecting-IP': '127.0.0.1',
-        'True-Client-IP': '127.0.0.1',
         'Via': '1.1 Chrome-Compression-Proxy',
         'Host': Options.host
     }
